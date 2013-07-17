@@ -84,6 +84,10 @@ end
 
 def post_job(url)
   url = URI.parse(url)
+  if node['jenkins']['cli']['user'] && node['jenkins']['cli']['password']
+    url.user = node['jenkins']['cli']['user']
+    url.password = node['jenkins']['cli']['password']
+  end
   Chef::Log.debug("#{@new_resource} POST #{url.request_uri} using #{@new_resource.config}")
   body = IO.read(@new_resource.config)
   headers = {"Content-Type" => "text/xml"}
